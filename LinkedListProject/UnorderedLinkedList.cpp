@@ -1,5 +1,7 @@
-
+#include <iostream>
 #include "UnorderedLinkedList.h"
+
+using namespace std;
 
 template <class Type>
 bool unorderedLinkedList<Type>::search(const Type& searchItem) const

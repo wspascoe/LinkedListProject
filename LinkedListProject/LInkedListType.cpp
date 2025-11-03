@@ -41,6 +41,42 @@ bool linkedListIterator<Type>::operator!=(const linkedListIterator<Type>& right)
 }
 //End of Linked List Iterator Implementation
 
+template<class Type>
+void linkedListType<Type>::copyList(const linkedListType<Type>& otherList)
+{
+	DestroyList(); //if the list is nonempty, make it empty
+	if (otherList.firstNode == nullptr) //otherList is empty
+	{
+		firstNode = nullptr;
+		lastNode = nullptr;
+		count = 0;
+	}
+	else
+	{
+		nodeType<Type>* current; //pointer to traverse the otherList
+		current = otherList.firstNode; //set current to point to the first node of otherList
+		count = otherList.count;
+		//copy the first node
+		nodeType<Type>* newNode; //pointer to create a node
+		newNode = new nodeType<Type>; //create the node
+		newNode->info = current->info; //copy the info
+		newNode->link = nullptr; //set the link field of the node to nullptr
+		firstNode = newNode; //make first point to the first node
+		lastNode = newNode; //make last point to the last node
+		current = current->link; //advance current to the next node
+		//copy the remaining nodes
+		while (current != nullptr)
+		{
+			newNode = new nodeType<Type>; //create a node
+			newNode->info = current->info; //copy the info
+			newNode->link = nullptr; //set the link of the new node to nullptr
+			lastNode->link = newNode; //attach newNode after last
+			lastNode = newNode; //make last point to the actual last node
+			current = current->link; //advance current to the next node
+		}
+	}
+}
+
 //Linked List Type Implementation
 template <class Type>
 const linkedListType<Type>& linkedListType<Type>::operator=(const linkedListType<Type>& otherList)
@@ -61,14 +97,14 @@ void linkedListType<Type>::initializeList()
 template <class Type>
 bool linkedListType<Type>::isEmptyList() const
 {
-	return (first == nullptr);
+	return (firstNode == nullptr);
 }
 
 template <class Type>
 void linkedListType<Type>::print() const
 {
 	nodeType<Type>* current; //pointer to traverse the list
-	current = first; //set current to point to the first node
+	current = firstNode; //set current to point to the first node
 	while (current != nullptr) //while more nodes to print
 	{
 		cout << current->info << " ";
@@ -86,34 +122,34 @@ template <class Type>
 void linkedListType<Type>::DestroyList()
 {
 	nodeType<Type>* temp; //pointer to deallocate the memory
-	while (first != nullptr) //while there are nodes in the list
+	while (firstNode != nullptr) //while there are nodes in the list
 	{
-		temp = first; //set temp to point to the current node
-		first = first->link; //advance first to the next node
+		temp = firstNode; //set temp to point to the current node
+		firstNode = firstNode->link; //advance first to the next node
 		delete temp; //deallocate the memory occupied by temp
 	}
-	last = nullptr; //initialize last to nullptr
+	lastNode = nullptr; //initialize last to nullptr
 	count = 0;
 }
 
 template <class Type>
 Type linkedListType<Type>::front() const
 {
-	assert(first != nullptr); //list is not empty
-	return first->info; //return the info of the first node
+	assert(firstNode != nullptr); //list is not empty
+	return firstNode->info; //return the info of the first node
 }
 
 template <class Type>
 Type linkedListType<Type>::back() const
 {
-	assert(last != nullptr); //list is not empty
-	return last->info; //return the info of the last node
+	assert(lastNode != nullptr); //list is not empty
+	return lastNode->info; //return the info of the last node
 }
 
 template <class Type>
 linkedListIterator<Type> linkedListType<Type>::begin()
 {
-	linkedListIterator<Type> temp(first);
+	linkedListIterator<Type> temp(firstNode);
 	return temp;
 }
 
@@ -127,16 +163,16 @@ linkedListIterator<Type> linkedListType<Type>::end()
 template <class Type>
 linkedListType<Type>::linkedListType()
 {
-	first = nullptr;
-	last = nullptr;
+	firstNode = nullptr;
+	lastNode = nullptr;
 	count = 0;
 }
 
 template <class Type>
 linkedListType<Type>::linkedListType(const linkedListType<Type>& otherList)
 {
-	first = nullptr;
-	last = nullptr;
+	firstNode = nullptr;
+	lastNode = nullptr;
 	count = 0;
 	copyList(otherList);
 }

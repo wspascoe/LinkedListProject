@@ -1,5 +1,3 @@
-#pragma once
-
 
 template <class Type>
 struct nodeType
@@ -28,10 +26,11 @@ class linkedListType
 {
 private:
 	void copyList(const linkedListType<Type>& otherList);
+
 protected:
 	int count; //variable to store the number of nodes in the list
-	nodeType<Type>* first; //pointer to the first node of the list
-	nodeType<Type>* last; //pointer to the last node of the list
+	nodeType<Type>* firstNode; //pointer to the first node of the list
+	nodeType<Type>* lastNode; //pointer to the last node of the list
 
 public:
 	const linkedListType<Type>& operator=(const linkedListType<Type>&);
